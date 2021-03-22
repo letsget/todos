@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Main from "./Pages/Main";
+import "./App.css";
+/*
+Перенести верстку TODO из примера в ваше React приложение.
+    Разбейте верстку на компоненты и отобразите на экране визуальную часть TODO. Вынесите в отдельные компоненты:
+    Task - одна задача
+TaskList - список задач
+NewTaskForm - форма для добавления
+Footer - футер с информацией и кнопками
+TasksFilter - фильтры в футере
+Сделайте, чтобы все данные в Task передавались через props из верхнего компонента вашего приложения
+Особенности:
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    Пока не реализовывайте отображение строки "created 5 minutes ago" - мы займемся этим потом
+Время создания задачи должно быть классом Date
+Для отображения в качестве строки используйте эту функцию библиотеки date-fns
+*/
+
+const App = () => <Main />;
 
 export default App;
