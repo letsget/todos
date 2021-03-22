@@ -3,13 +3,9 @@ export const HANDLE_VALUE = "HANDLE_VALUE";
 export const GET_CURRENT_KEY = "GET_CURRENT_KEY";
 export const HANDLE_COMPLETED = "HANDLE_COMPLETED";
 export const REMOVE_TODO = "REMOVE_TODO";
-export const EDIT_TODO = "EDIT_TODO";
-export const FILTER_ACTIVE = "FILTER_ACTIVE";
-export const FILTER_COMPLETED = "FILTER_COMPLETED";
+export const ADD_EDITED_TODO = "ADD_EDITED_TODO";
 export const REMOVE_COMPLETED = "REMOVE_COMPLETED";
-export const DISPLAY_ALL = "DISPLAY_ALL";
 export const SET_CURRENT_FILTER = "SET_CURRENT_FILTER";
-export const FILTER_TODOS = "FILTER_TODOS";
 
 export const addTodo = (newTodo) => ({
   type: ADD_NEW_TODO,
@@ -36,19 +32,9 @@ export const removeTodo = (i) => ({
   payload: i,
 });
 
-export const editTodo = (editing) => ({
-  type: EDIT_TODO,
-  payload: editing,
-});
-
-export const filterActive = (filtered) => ({
-  type: FILTER_ACTIVE,
-  payload: filtered,
-});
-
-export const filterCompleted = (filtered) => ({
-  type: FILTER_COMPLETED,
-  payload: filtered,
+export const addEditedTodo = (index, editedText) => ({
+  type: ADD_EDITED_TODO,
+  payload: { index, editedText },
 });
 
 export const removeCompleted = (todos) => ({
@@ -56,17 +42,7 @@ export const removeCompleted = (todos) => ({
   payload: todos,
 });
 
-export const displayAll = (todos) => ({
-  type: DISPLAY_ALL,
-  payload: todos,
-});
-
 export const setCurrentFilter = (active) => ({
   type: SET_CURRENT_FILTER,
   payload: active,
-});
-
-export const filterTodos = (filtered) => ({
-  type: FILTER_TODOS,
-  payload: filtered,
 });

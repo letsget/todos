@@ -6,13 +6,9 @@ import {
   GET_CURRENT_KEY,
   HANDLE_COMPLETED,
   REMOVE_TODO,
-  EDIT_TODO,
-  FILTER_ACTIVE,
-  FILTER_COMPLETED,
+  ADD_EDITED_TODO,
   REMOVE_COMPLETED,
-  DISPLAY_ALL,
   SET_CURRENT_FILTER,
-  FILTER_TODOS,
 } from "../actions/App";
 
 const initialState = {
@@ -44,7 +40,7 @@ const initialState = {
   ],
   currentFilter: "all",
   isEditing: false,
-  initialValue: "",
+  inputValue: "",
   currentKey: null,
 };
 
@@ -54,7 +50,7 @@ const appReducer = (state = initialState, { type, payload }) => {
       if (payload.trim()) {
         return {
           ...state,
-          initialValue: "",
+          inputValue: "",
           todos: state.todos.concat({
             id: Math.random(),
             text: payload,
@@ -70,9 +66,10 @@ const appReducer = (state = initialState, { type, payload }) => {
     case HANDLE_VALUE:
       return {
         ...state,
-        initialValue: payload,
+        inputValue: payload,
       };
     case GET_CURRENT_KEY:
+      console.log(payload);
       return {
         ...state,
         currentKey: payload,
@@ -91,23 +88,14 @@ const appReducer = (state = initialState, { type, payload }) => {
         ...state,
         todos: copy,
       };
-    case EDIT_TODO:
+    case ADD_EDITED_TODO:
       console.log(payload);
+      const { index, editedText } = payload;
+      const edited = [...state.todos];
+      edited[index].text = editedText;
       return {
         ...state,
-        isEditing: !payload,
-      };
-    case FILTER_ACTIVE:
-      console.log(payload);
-      return {
-        ...state,
-        todos: payload,
-      };
-    case FILTER_COMPLETED:
-      console.log(payload);
-      return {
-        ...state,
-        todos: payload.filter((todo) => todo.done),
+        todos: edited,
       };
     case REMOVE_COMPLETED:
       console.log(payload);
@@ -115,23 +103,11 @@ const appReducer = (state = initialState, { type, payload }) => {
         ...state,
         todos: payload.filter((todo) => !todo.done),
       };
-    case DISPLAY_ALL:
-      console.log(payload);
-      return {
-        ...state,
-        todos: payload,
-      };
     case SET_CURRENT_FILTER:
       console.log(payload);
       return {
         ...state,
         currentFilter: payload,
-      };
-    case FILTER_TODOS:
-      console.log(payload);
-      return {
-        ...state,
-        filteredTasks: payload,
       };
     default:
       return state;

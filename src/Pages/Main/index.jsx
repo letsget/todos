@@ -6,16 +6,13 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   setCurrentFilter,
   removeCompleted,
-  filterTodos,
+  handleValue,
 } from "../../actions/App";
 
 const Main = () => {
   const dispatch = useDispatch();
   const tasks = useSelector(({ app: { todos } }) => todos);
   const filter = useSelector(({ app: { currentFilter } }) => currentFilter);
-  // const filteredTasks = useSelector(
-  //   ({ app: { filteredTasks } }) => filteredTasks
-  // );
 
   const activeTasks = tasks.filter((task) => !task.done);
   const completedTasks = tasks.filter((task) => task.done);
@@ -30,13 +27,16 @@ const Main = () => {
 
   const onFilter = ({ target: { name } }) => {
     dispatch(setCurrentFilter(name));
-    dispatch(filterTodos(filtered(name)));
+    // dispatch(filterTodos(filtered(name)));
   };
 
   const onRemoveCompleted = () => {
     dispatch(removeCompleted(tasks));
   };
 
+  const valueHandler = ({ target: { value } }) => dispatch(handleValue(value));
+
+  /*
   const filtered = (val) => {
     switch (val) {
       case "active":
@@ -47,11 +47,11 @@ const Main = () => {
         return null;
     }
   };
-
+*/
   return (
     <section className="todoapp">
-      <NewTaskForm />
-      <TaskList tasks={tasksToRender} />
+      <NewTaskForm valueHandler={valueHandler} />
+      <TaskList tasks={tasksToRender} valueHandler={valueHandler} />
       <TasksFilter
         tasksRemaining={tasksRemaining}
         onFilter={onFilter}

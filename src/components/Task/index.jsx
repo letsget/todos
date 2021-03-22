@@ -1,15 +1,46 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import classNames from "classnames";
+import { addEditedTodo, getCurrentKey } from "../../actions/App";
 // import { handleCompleted } from "../../actions/App";
 
 const Task = ({ text, time, done, i, onComplete, onRemove }) => {
-  const isEditing = useSelector(({ app: { isEditing } }) => isEditing);
+  const dispatch = useDispatch();
+
+  const [value, setValue] = useState(text);
+  const [isEditing, setIsEditing] = useState(false);
+  const inputRef = useRef(null);
 
   const classes = classNames({
     completed: done && !isEditing,
     editing: isEditing,
   });
+
+  const onEdit = ({ target: { value } }) => {
+    setValue(value);
+  };
+
+  const toggleEditMode = () => setIsEditing(true);
+
+  useEffect(() => {
+    if (isEditing) {
+      inputRef.current.focus();
+      const handleKey = (e) => {
+        dispatch(getCurrentKey(e.key));
+        if (e.key === "Escape") {
+          setIsEditing(false);
+        } else if (e.key === "Enter") {
+          dispatch(addEditedTodo(i, value));
+          setIsEditing(false);
+        }
+      };
+      document
+        .querySelector(".edit-mode")
+        .addEventListener("keydown", handleKey);
+
+      return window.removeEventListener("keydown", handleKey);
+    }
+  }, [value]);
 
   return (
     <li className={classes}>
@@ -24,15 +55,20 @@ const Task = ({ text, time, done, i, onComplete, onRemove }) => {
           <span className="description">{text}</span>
           <span className="created">{time}</span>
         </label>
-        <button
-          // onClick={() => editHandler(isEditing)}
-          className="icon icon-edit"
-        />
+        <button onClick={toggleEditMode} className="icon icon-edit" />
         <button onClick={() => onRemove(i)} className="icon icon-destroy" />
-        {isEditing && (
-          <input type="text" className="edit" value="Editing task" />
-        )}
       </div>
+      {isEditing && (
+        <input
+          type="text"
+          className="edit edit-mode"
+          ref={inputRef}
+          id={i}
+          onChange={(e) => onEdit(e)}
+          value={value}
+          onKeyPress={(e) => dispatch(getCurrentKey(e.key))}
+        />
+      )}
     </li>
   );
 };

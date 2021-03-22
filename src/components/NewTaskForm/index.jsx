@@ -1,18 +1,17 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addTodo, handleValue, getCurrentKey } from "../../actions/App";
+import { addTodo, getCurrentKey } from "../../actions/App";
 
-const NewTaskForm = () => {
+const NewTaskForm = ({ valueHandler }) => {
   const dispatch = useDispatch();
-  const val = useSelector(({ app: { initialValue } }) => initialValue);
+  const val = useSelector(({ app: { inputValue } }) => inputValue);
   const key = useSelector(({ app: { currentKey } }) => currentKey);
-  const valueHandler = ({ target: { value } }) => dispatch(handleValue(value));
 
   const onInput = (e) => dispatch(getCurrentKey(e.key));
 
   useEffect(() => {
-    console.log("inside useEffect");
     if (key === "Enter") {
+      console.log("попали в if добавления");
       dispatch(addTodo(val));
     }
   }, [key]);
