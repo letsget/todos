@@ -1,55 +1,71 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import classNames from "classnames";
-import { addEditedTodo, getCurrentKey } from "../../actions/App";
+import cn from "classnames";
+import {
+  addEditedTodo,
+  getCurrentKey,
+  setEditMode,
+  cancelEditMode,
+} from "../../actions/App";
 // import { handleCompleted } from "../../actions/App";
 
-const Task = ({ text, time, done, i, onComplete, onRemove }) => {
+const Task = ({ text, time, status, i, onComplete, onRemove }) => {
   const dispatch = useDispatch();
-
+  const key = useSelector(({ app: { currentKey } }) => currentKey);
   const [value, setValue] = useState(text);
-  const [isEditing, setIsEditing] = useState(false);
+  const [currentlyEditing, setIsCurrentlyEditing] = useState(false);
+  const [prevStatus, setPrevStatus] = useState(null);
   const inputRef = useRef(null);
-
-  const classes = classNames({
-    completed: done && !isEditing,
-    editing: isEditing,
-  });
-
   const onEdit = ({ target: { value } }) => {
     setValue(value);
   };
 
-  const toggleEditMode = () => setIsEditing(true);
+  const toggleEditMode = () => {
+    setPrevStatus(status);
+    setIsCurrentlyEditing(true);
+    dispatch(setEditMode(i));
+
+    // inputRef.current.focus();
+  };
+
+  const onEditSubmit = (e) => {
+    e.preventDefault();
+    setPrevStatus(status);
+    dispatch(addEditedTodo(i, value, prevStatus));
+    dispatch(cancelEditMode(i, prevStatus));
+    setIsCurrentlyEditing(false);
+  };
+
+  const handleKey = (e) => {
+    if (e.keyCode === 27) {
+      window.removeEventListener("keydown", handleKey);
+      dispatch(cancelEditMode(i, prevStatus));
+      setIsCurrentlyEditing(false);
+      setValue(text);
+    }
+  };
 
   useEffect(() => {
-    if (isEditing) {
-      inputRef.current.focus();
-      const handleKey = (e) => {
-        dispatch(getCurrentKey(e.key));
-        if (e.key === "Escape") {
-          setIsEditing(false);
-        } else if (e.key === "Enter") {
-          dispatch(addEditedTodo(i, value));
-          setIsEditing(false);
-        }
-      };
-      document
-        .querySelector(".edit-mode")
-        .addEventListener("keydown", handleKey);
+    if (currentlyEditing) {
+      window.addEventListener("keydown", handleKey);
 
-      return window.removeEventListener("keydown", handleKey);
+      return () => window.addEventListener("keydown", handleKey);
     }
-  }, [value]);
+  });
 
   return (
-    <li className={classes}>
+    <li
+      className={cn({
+        completed: status === "completed",
+        editing: status === "editing",
+      })}
+    >
       <div className="view">
         <input
-          onChange={() => onComplete(i)}
+          onChange={() => onComplete(i, status)}
           className="toggle"
           type="checkbox"
-          checked={done}
+          checked={status === "completed"}
         />
         <label>
           <span className="description">{text}</span>
@@ -58,16 +74,19 @@ const Task = ({ text, time, done, i, onComplete, onRemove }) => {
         <button onClick={toggleEditMode} className="icon icon-edit" />
         <button onClick={() => onRemove(i)} className="icon icon-destroy" />
       </div>
-      {isEditing && (
-        <input
-          type="text"
-          className="edit edit-mode"
-          ref={inputRef}
-          id={i}
-          onChange={(e) => onEdit(e)}
-          value={value}
-          onKeyPress={(e) => dispatch(getCurrentKey(e.key))}
-        />
+      {status === "editing" && (
+        <form onSubmit={onEditSubmit}>
+          <input
+            type="text"
+            autoFocus
+            ref={inputRef}
+            className="edit edit-mode"
+            id={i}
+            onChange={(e) => onEdit(e)}
+            value={value}
+            onKeyPress={(e) => dispatch(getCurrentKey(e.key))}
+          />
+        </form>
       )}
     </li>
   );

@@ -1,4 +1,7 @@
 import React from "react";
+// import cn from "classnames";
+
+const filters = ["all", "active", "completed"];
 
 const TasksFilter = ({
   tasksRemaining,
@@ -6,39 +9,26 @@ const TasksFilter = ({
   onRemoveCompleted,
   filter,
 }) => {
+  console.log(tasksRemaining);
   return (
     <footer className="footer">
       <span className="todo-count">
         {tasksRemaining ? `Active ${tasksRemaining}` : "All Done!"}
       </span>
       <ul className="filters">
-        <li>
-          <button
-            onClick={onFilter}
-            name="all"
-            className={filter === "all" ? "selected" : ""}
-          >
-            All
-          </button>
-        </li>
-        <li>
-          <button
-            onClick={onFilter}
-            name="active"
-            className={filter === "active" ? "selected" : ""}
-          >
-            Active
-          </button>
-        </li>
-        <li>
-          <button
-            onClick={onFilter}
-            name="completed"
-            className={filter === "completed" ? "selected" : ""}
-          >
-            Completed
-          </button>
-        </li>
+        {filters.map((current) => {
+          return (
+            <li key={current}>
+              <button
+                onClick={onFilter}
+                className={current === filter ? "selected" : ""}
+                data-filter={current}
+              >
+                {current}
+              </button>
+            </li>
+          );
+        })}
       </ul>
       <button onClick={onRemoveCompleted} className="clear-completed">
         Clear completed

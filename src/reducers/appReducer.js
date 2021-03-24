@@ -6,6 +6,8 @@ import {
   GET_CURRENT_KEY,
   HANDLE_COMPLETED,
   REMOVE_TODO,
+  SET_EDIT_MODE,
+  CANCEL_EDIT_MODE,
   ADD_EDITED_TODO,
   REMOVE_COMPLETED,
   SET_CURRENT_FILTER,
@@ -17,29 +19,28 @@ const initialState = {
       id: Date.now(),
       text: "Learn React",
       time: "12:25",
-      done: false,
+      status: "active",
     },
     {
       id: 1,
       text: "Learn Redux",
       time: "12:27",
-      done: false,
+      status: "active",
     },
     {
       id: 2,
       text: "Ask Serhio questions about JS",
       time: "12:29",
-      done: true,
+      status: "completed",
     },
     {
       id: 3,
       text: "Learn async code from code.mu",
       time: "12:45",
-      done: false,
+      status: "active",
     },
   ],
   currentFilter: "all",
-  isEditing: false,
   inputValue: "",
   currentKey: null,
 };
@@ -51,11 +52,12 @@ const appReducer = (state = initialState, { type, payload }) => {
         return {
           ...state,
           inputValue: "",
+          currentKey: null,
           todos: state.todos.concat({
             id: Math.random(),
             text: payload,
             time: new Date().getHours() + " " + new Date().getMinutes(),
-            done: false,
+            status: "active",
           }),
         };
       } else {
@@ -69,14 +71,14 @@ const appReducer = (state = initialState, { type, payload }) => {
         inputValue: payload,
       };
     case GET_CURRENT_KEY:
-      console.log(payload);
       return {
         ...state,
         currentKey: payload,
       };
     case HANDLE_COMPLETED:
+      const { i, status } = payload;
       const updated = [...state.todos];
-      updated[payload].done = !updated[payload].done;
+      updated[i].status = status === "active" ? "completed" : "active";
       return {
         ...state,
         todos: updated,
@@ -88,23 +90,39 @@ const appReducer = (state = initialState, { type, payload }) => {
         ...state,
         todos: copy,
       };
+    case SET_EDIT_MODE:
+      const cloned = [...state.todos];
+      if (cloned.some((e) => e.status === "editing")) {
+        cloned.map((e) => (e.status === "editing" ? (e.status = "active") : e));
+      }
+      cloned[payload].status = "editing";
+      return {
+        ...state,
+        todos: cloned,
+      };
+    case CANCEL_EDIT_MODE:
+      const { idx, taskStatus } = payload;
+      const canceledCopy = [...state.todos];
+      canceledCopy[idx].status = taskStatus;
+      return {
+        ...state,
+        todos: canceledCopy,
+      };
     case ADD_EDITED_TODO:
-      console.log(payload);
-      const { index, editedText } = payload;
+      const { index, editedText, editedStatus } = payload;
       const edited = [...state.todos];
       edited[index].text = editedText;
+      edited[index].status = editedStatus;
       return {
         ...state,
         todos: edited,
       };
     case REMOVE_COMPLETED:
-      console.log(payload);
       return {
         ...state,
-        todos: payload.filter((todo) => !todo.done),
+        todos: payload.filter(({ status }) => status === "active"),
       };
     case SET_CURRENT_FILTER:
-      console.log(payload);
       return {
         ...state,
         currentFilter: payload,

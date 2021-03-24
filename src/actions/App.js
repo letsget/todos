@@ -3,6 +3,8 @@ export const HANDLE_VALUE = "HANDLE_VALUE";
 export const GET_CURRENT_KEY = "GET_CURRENT_KEY";
 export const HANDLE_COMPLETED = "HANDLE_COMPLETED";
 export const REMOVE_TODO = "REMOVE_TODO";
+export const SET_EDIT_MODE = "SET_EDIT_MODE";
+export const CANCEL_EDIT_MODE = "CANCEL_EDIT_MODE";
 export const ADD_EDITED_TODO = "ADD_EDITED_TODO";
 export const REMOVE_COMPLETED = "REMOVE_COMPLETED";
 export const SET_CURRENT_FILTER = "SET_CURRENT_FILTER";
@@ -22,9 +24,9 @@ export const getCurrentKey = (key) => ({
   payload: key,
 });
 
-export const handleCompleted = (i) => ({
+export const handleCompleted = (i, status) => ({
   type: HANDLE_COMPLETED,
-  payload: i,
+  payload: { i, status },
 });
 
 export const removeTodo = (i) => ({
@@ -32,9 +34,19 @@ export const removeTodo = (i) => ({
   payload: i,
 });
 
-export const addEditedTodo = (index, editedText) => ({
+export const addEditedTodo = (index, editedText, editedStatus) => ({
   type: ADD_EDITED_TODO,
-  payload: { index, editedText },
+  payload: { index, editedText, editedStatus },
+});
+
+export const setEditMode = (i) => ({
+  type: SET_EDIT_MODE,
+  payload: i,
+});
+
+export const cancelEditMode = (idx, taskStatus) => ({
+  type: CANCEL_EDIT_MODE,
+  payload: { idx, taskStatus },
 });
 
 export const removeCompleted = (todos) => ({

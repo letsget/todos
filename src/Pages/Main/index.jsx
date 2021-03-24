@@ -14,10 +14,15 @@ const Main = () => {
   const tasks = useSelector(({ app: { todos } }) => todos);
   const filter = useSelector(({ app: { currentFilter } }) => currentFilter);
 
-  const activeTasks = tasks.filter((task) => !task.done);
-  const completedTasks = tasks.filter((task) => task.done);
-  const tasksRemaining = tasks.filter((task) => !task.done).length;
-
+  const activeTasks = tasks.filter(
+    ({ status }) => status === "active" || status === "editing"
+  );
+  const completedTasks = tasks.filter(
+    ({ status }) => status === "completed" || status === "editing"
+  );
+  const tasksRemaining = tasks.filter(({ status }) => status !== "completed")
+    .length;
+  console.log(filter);
   const tasksToRender =
     filter === "all"
       ? tasks
@@ -25,9 +30,9 @@ const Main = () => {
       ? activeTasks
       : completedTasks;
 
-  const onFilter = ({ target: { name } }) => {
-    dispatch(setCurrentFilter(name));
-    // dispatch(filterTodos(filtered(name)));
+  const onFilter = ({ target }) => {
+    const filter = target.dataset.filter;
+    dispatch(setCurrentFilter(filter));
   };
 
   const onRemoveCompleted = () => {

@@ -3,24 +3,22 @@ import Task from "../Task";
 import { handleCompleted, removeTodo, editTodo } from "../../actions/App";
 import { useSelector, useDispatch } from "react-redux";
 
-const TaskList = React.memo(({ tasks, valueHandler }) => {
+const TaskList = ({ tasks, valueHandler }) => {
   const dispatch = useDispatch();
 
-  const onComplete = (i) => dispatch(handleCompleted(i));
+  const onComplete = (i, status) => dispatch(handleCompleted(i, status));
   const onRemove = (i) => dispatch(removeTodo(i));
-  // const onEdit = (loading) => dispatch(editTodo(loading));
 
   return (
     <ul className="todo-list">
       {console.log("rendering tasks", tasks)}
-      {tasks.map(({ id, text, time, done, isEditing }, i) => (
+      {tasks.map(({ id, text, time, status }, i) => (
         <Task
           key={id}
           text={text}
           time={time}
-          done={done}
+          status={status}
           i={i}
-          isEditing={isEditing}
           onComplete={onComplete}
           onRemove={onRemove}
           valueHandler={valueHandler}
@@ -28,6 +26,6 @@ const TaskList = React.memo(({ tasks, valueHandler }) => {
       ))}
     </ul>
   );
-});
+};
 
 export default TaskList;

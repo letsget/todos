@@ -11,7 +11,6 @@ const NewTaskForm = ({ valueHandler }) => {
 
   useEffect(() => {
     if (key === "Enter") {
-      console.log("попали в if добавления");
       dispatch(addTodo(val));
     }
   }, [key]);
