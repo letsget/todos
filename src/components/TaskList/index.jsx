@@ -1,7 +1,7 @@
 import React from "react";
 import Task from "../Task";
-import { handleCompleted, removeTodo, editTodo } from "../../actions/App";
-import { useSelector, useDispatch } from "react-redux";
+import { handleCompleted, removeTodo } from "../../actions/App";
+import { useDispatch } from "react-redux";
 
 const TaskList = ({ tasks, valueHandler }) => {
   const dispatch = useDispatch();
@@ -11,7 +11,6 @@ const TaskList = ({ tasks, valueHandler }) => {
 
   return (
     <ul className="todo-list">
-      {console.log("rendering tasks", tasks)}
       {tasks.map(({ id, text, time, status }, i) => (
         <Task
           key={id}

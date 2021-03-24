@@ -9,7 +9,6 @@ const TasksFilter = ({
   onRemoveCompleted,
   filter,
 }) => {
-  console.log(tasksRemaining);
   return (
     <footer className="footer">
       <span className="todo-count">

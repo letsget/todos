@@ -22,7 +22,6 @@ const Main = () => {
   );
   const tasksRemaining = tasks.filter(({ status }) => status !== "completed")
     .length;
-  console.log(filter);
   const tasksToRender =
     filter === "all"
       ? tasks
@@ -41,18 +40,6 @@ const Main = () => {
 
   const valueHandler = ({ target: { value } }) => dispatch(handleValue(value));
 
-  /*
-  const filtered = (val) => {
-    switch (val) {
-      case "active":
-        return activeTasks;
-      case "completed":
-        return completedTasks;
-      default:
-        return null;
-    }
-  };
-*/
   return (
     <section className="todoapp">
       <NewTaskForm valueHandler={valueHandler} />

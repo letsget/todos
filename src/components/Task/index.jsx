@@ -11,7 +11,7 @@ import {
 
 const Task = ({ text, time, status, i, onComplete, onRemove }) => {
   const dispatch = useDispatch();
-  const key = useSelector(({ app: { currentKey } }) => currentKey);
+  // const key = useSelector(({ app: { currentKey } }) => currentKey);
   const [value, setValue] = useState(text);
   const [currentlyEditing, setIsCurrentlyEditing] = useState(false);
   const [prevStatus, setPrevStatus] = useState(null);
