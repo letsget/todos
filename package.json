@@ -1,6 +1,6 @@
 {
   "name": "todo-jm",
-  "homepage": "https://letsget.github.io/todo-jm",
+  "homepage": "https://letsget.github.io/todos/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
