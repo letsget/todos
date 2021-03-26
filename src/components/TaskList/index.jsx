@@ -3,7 +3,7 @@ import Task from "components/Task";
 import { handleCompleted, removeTodo } from "actions/App";
 import { useDispatch } from "react-redux";
 
-const TaskList = ({ tasks, valueHandler }) => {
+const TaskList = ({ tasks }) => {
   const dispatch = useDispatch();
 
   const onComplete = (i, status) => dispatch(handleCompleted(i, status));
@@ -22,7 +22,6 @@ const TaskList = ({ tasks, valueHandler }) => {
           i={i}
           onComplete={onComplete}
           onRemove={onRemove}
-          valueHandler={valueHandler}
         />
       ))}
     </ul>

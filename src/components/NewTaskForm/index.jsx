@@ -1,14 +1,17 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { addTodo } from "actions/App";
 
 const NewTaskForm = ({ valueHandler }) => {
   const dispatch = useDispatch();
-  const val = useSelector(({ app: { inputValue } }) => inputValue);
+  const [value, setValue] = useState("");
+
+  const onInputChange = ({ target: { value } }) => setValue(value);
 
   const onAdd = (e) => {
     e.preventDefault();
-    dispatch(addTodo(val));
+    dispatch(addTodo(value));
+    setValue("");
   };
 
   return (
@@ -16,11 +19,11 @@ const NewTaskForm = ({ valueHandler }) => {
       <h1>todos</h1>
       <form onSubmit={onAdd}>
         <input
-          value={val}
+          value={value}
           className="new-todo"
           placeholder="What needs to be done?"
           autoFocus
-          onChange={(e) => valueHandler(e)}
+          onChange={(e) => onInputChange(e)}
         />
       </form>
     </header>

@@ -1,6 +1,5 @@
 import {
   ADD_NEW_TODO,
-  HANDLE_VALUE,
   GET_CURRENT_KEY,
   HANDLE_COMPLETED,
   REMOVE_TODO,
@@ -9,7 +8,7 @@ import {
   ADD_EDITED_TODO,
   REMOVE_COMPLETED,
   SET_CURRENT_FILTER,
-} from "../actions/App";
+} from "actions/App";
 
 const initialState = {
   todos: [
@@ -39,8 +38,8 @@ const initialState = {
     },
   ],
   currentFilter: "all",
-  inputValue: "",
   currentKey: null,
+  filters: ["all", "active", "completed"],
 };
 
 const appReducer = (state = initialState, { type, payload }) => {
@@ -63,11 +62,6 @@ const appReducer = (state = initialState, { type, payload }) => {
           ...state,
         };
       }
-    case HANDLE_VALUE:
-      return {
-        ...state,
-        inputValue: payload,
-      };
     case GET_CURRENT_KEY:
       return {
         ...state,

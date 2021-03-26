@@ -26,6 +26,8 @@ export const getTodosToRender = createSelector(
   }
 );
 
+// This example from official documentation does not work for some reason
+
 /*
 export const getTodosToRender = createSelector(
   [(getCurrentFilter, getAllTodos)],

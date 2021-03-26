@@ -5,9 +5,9 @@ import {
   getCurrentFilter,
   getActiveTodosLength,
   getTodosToRender,
-} from "../../selectors";
+} from "selectors";
 import { useDispatch } from "react-redux";
-import { setCurrentFilter, removeCompleted, handleValue } from "actions/App";
+import { setCurrentFilter, removeCompleted } from "actions/App";
 import { connect } from "react-redux";
 
 const Main = ({ filter, tasksRemaining, todosToRender }) => {
@@ -21,13 +21,10 @@ const Main = ({ filter, tasksRemaining, todosToRender }) => {
   const onRemoveCompleted = () => {
     dispatch(removeCompleted(todosToRender));
   };
-
-  const valueHandler = ({ target: { value } }) => dispatch(handleValue(value));
-
   return (
     <section className="todoapp">
-      <NewTaskForm valueHandler={valueHandler} />
-      <TaskList tasks={todosToRender} valueHandler={valueHandler} />
+      <NewTaskForm />
+      <TaskList tasks={todosToRender} />
       <TasksFilter
         tasksRemaining={tasksRemaining}
         onFilter={onFilter}

@@ -1,6 +1,5 @@
 import React from "react";
-
-const filters = ["all", "active", "completed"];
+import { useSelector } from "react-redux";
 
 const TasksFilter = ({
   tasksRemaining,
@@ -8,6 +7,8 @@ const TasksFilter = ({
   onRemoveCompleted,
   filter,
 }) => {
+  const filters = useSelector(({ app: { filters } }) => filters);
+
   return (
     <footer className="footer">
       <span className="todo-count">

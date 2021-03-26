@@ -1,5 +1,4 @@
 export const ADD_NEW_TODO = "ADD_NEW_TODO";
-export const HANDLE_VALUE = "HANDLE_VALUE";
 export const GET_CURRENT_KEY = "GET_CURRENT_KEY";
 export const HANDLE_COMPLETED = "HANDLE_COMPLETED";
 export const REMOVE_TODO = "REMOVE_TODO";
@@ -12,11 +11,6 @@ export const SET_CURRENT_FILTER = "SET_CURRENT_FILTER";
 export const addTodo = (todo) => ({
   type: ADD_NEW_TODO,
   payload: todo,
-});
-
-export const handleValue = (value) => ({
-  type: HANDLE_VALUE,
-  payload: value,
 });
 
 export const getCurrentKey = (key) => ({
