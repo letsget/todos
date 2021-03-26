@@ -9,9 +9,9 @@ export const ADD_EDITED_TODO = "ADD_EDITED_TODO";
 export const REMOVE_COMPLETED = "REMOVE_COMPLETED";
 export const SET_CURRENT_FILTER = "SET_CURRENT_FILTER";
 
-export const addTodo = (newTodo) => ({
+export const addTodo = (todo) => ({
   type: ADD_NEW_TODO,
-  payload: newTodo,
+  payload: todo,
 });
 
 export const handleValue = (value) => ({

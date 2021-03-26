@@ -1,21 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import cn from "classnames";
 import {
   addEditedTodo,
   getCurrentKey,
   setEditMode,
   cancelEditMode,
-} from "../../actions/App";
-// import { handleCompleted } from "../../actions/App";
+} from "actions/App";
 
 const Task = ({ text, time, status, i, onComplete, onRemove }) => {
   const dispatch = useDispatch();
-  // const key = useSelector(({ app: { currentKey } }) => currentKey);
   const [value, setValue] = useState(text);
   const [currentlyEditing, setIsCurrentlyEditing] = useState(false);
   const [prevStatus, setPrevStatus] = useState(null);
-  const inputRef = useRef(null);
   const onEdit = ({ target: { value } }) => {
     setValue(value);
   };
@@ -24,8 +21,6 @@ const Task = ({ text, time, status, i, onComplete, onRemove }) => {
     setPrevStatus(status);
     setIsCurrentlyEditing(true);
     dispatch(setEditMode(i));
-
-    // inputRef.current.focus();
   };
 
   const onEditSubmit = (e) => {
@@ -48,7 +43,6 @@ const Task = ({ text, time, status, i, onComplete, onRemove }) => {
   useEffect(() => {
     if (currentlyEditing) {
       window.addEventListener("keydown", handleKey);
-
       return () => window.addEventListener("keydown", handleKey);
     }
   });
@@ -79,7 +73,6 @@ const Task = ({ text, time, status, i, onComplete, onRemove }) => {
           <input
             type="text"
             autoFocus
-            ref={inputRef}
             className="edit edit-mode"
             id={i}
             onChange={(e) => onEdit(e)}

@@ -1,31 +1,28 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addTodo, getCurrentKey } from "../../actions/App";
+import { addTodo } from "actions/App";
 
 const NewTaskForm = ({ valueHandler }) => {
   const dispatch = useDispatch();
   const val = useSelector(({ app: { inputValue } }) => inputValue);
-  const key = useSelector(({ app: { currentKey } }) => currentKey);
 
-  const onInput = (e) => dispatch(getCurrentKey(e.key));
-
-  useEffect(() => {
-    if (key === "Enter") {
-      dispatch(addTodo(val));
-    }
-  }, [key]);
+  const onAdd = (e) => {
+    e.preventDefault();
+    dispatch(addTodo(val));
+  };
 
   return (
     <header className="header">
       <h1>todos</h1>
-      <input
-        value={val}
-        className="new-todo"
-        placeholder="What needs to be done?"
-        autoFocus
-        onChange={(e) => valueHandler(e)}
-        onKeyPress={(e) => onInput(e)}
-      />
+      <form onSubmit={onAdd}>
+        <input
+          value={val}
+          className="new-todo"
+          placeholder="What needs to be done?"
+          autoFocus
+          onChange={(e) => valueHandler(e)}
+        />
+      </form>
     </header>
   );
 };

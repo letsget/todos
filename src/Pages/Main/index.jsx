@@ -1,33 +1,17 @@
-import React, { useEffect } from "react";
-import NewTaskForm from "../../components/NewTaskForm";
-import TasksFilter from "../../components/TasksFilter";
-import TaskList from "../../components/TaskList";
-import { useSelector, useDispatch } from "react-redux";
+import NewTaskForm from "components/NewTaskForm";
+import TasksFilter from "components/TasksFilter";
+import TaskList from "components/TaskList";
 import {
-  setCurrentFilter,
-  removeCompleted,
-  handleValue,
-} from "../../actions/App";
+  getCurrentFilter,
+  getActiveTodosLength,
+  getTodosToRender,
+} from "../../selectors";
+import { useDispatch } from "react-redux";
+import { setCurrentFilter, removeCompleted, handleValue } from "actions/App";
+import { connect } from "react-redux";
 
-const Main = () => {
+const Main = ({ filter, tasksRemaining, todosToRender }) => {
   const dispatch = useDispatch();
-  const tasks = useSelector(({ app: { todos } }) => todos);
-  const filter = useSelector(({ app: { currentFilter } }) => currentFilter);
-
-  const activeTasks = tasks.filter(
-    ({ status }) => status === "active" || status === "editing"
-  );
-  const completedTasks = tasks.filter(
-    ({ status }) => status === "completed" || status === "editing"
-  );
-  const tasksRemaining = tasks.filter(({ status }) => status !== "completed")
-    .length;
-  const tasksToRender =
-    filter === "all"
-      ? tasks
-      : filter === "active"
-      ? activeTasks
-      : completedTasks;
 
   const onFilter = ({ target }) => {
     const filter = target.dataset.filter;
@@ -35,7 +19,7 @@ const Main = () => {
   };
 
   const onRemoveCompleted = () => {
-    dispatch(removeCompleted(tasks));
+    dispatch(removeCompleted(todosToRender));
   };
 
   const valueHandler = ({ target: { value } }) => dispatch(handleValue(value));
@@ -43,7 +27,7 @@ const Main = () => {
   return (
     <section className="todoapp">
       <NewTaskForm valueHandler={valueHandler} />
-      <TaskList tasks={tasksToRender} valueHandler={valueHandler} />
+      <TaskList tasks={todosToRender} valueHandler={valueHandler} />
       <TasksFilter
         tasksRemaining={tasksRemaining}
         onFilter={onFilter}
@@ -54,4 +38,12 @@ const Main = () => {
   );
 };
 
-export default Main;
+const mapStateToProps = (state) => {
+  return {
+    filter: getCurrentFilter(state),
+    tasksRemaining: getActiveTodosLength(state),
+    todosToRender: getTodosToRender(state),
+  };
+};
+
+export default connect(mapStateToProps)(Main);

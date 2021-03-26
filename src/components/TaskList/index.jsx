@@ -1,6 +1,6 @@
 import React from "react";
-import Task from "../Task";
-import { handleCompleted, removeTodo } from "../../actions/App";
+import Task from "components/Task";
+import { handleCompleted, removeTodo } from "actions/App";
 import { useDispatch } from "react-redux";
 
 const TaskList = ({ tasks, valueHandler }) => {
@@ -8,6 +8,8 @@ const TaskList = ({ tasks, valueHandler }) => {
 
   const onComplete = (i, status) => dispatch(handleCompleted(i, status));
   const onRemove = (i) => dispatch(removeTodo(i));
+
+  console.log("rendering todos", tasks);
 
   return (
     <ul className="todo-list">

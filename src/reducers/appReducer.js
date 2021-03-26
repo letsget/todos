@@ -1,5 +1,3 @@
-import { setFilter } from "../utils";
-
 import {
   ADD_NEW_TODO,
   HANDLE_VALUE,
@@ -75,7 +73,7 @@ const appReducer = (state = initialState, { type, payload }) => {
         ...state,
         currentKey: payload,
       };
-    case HANDLE_COMPLETED:
+    case HANDLE_COMPLETED: {
       const { i, status } = payload;
       const updated = [...state.todos];
       updated[i].status = status === "active" ? "completed" : "active";
@@ -83,13 +81,16 @@ const appReducer = (state = initialState, { type, payload }) => {
         ...state,
         todos: updated,
       };
-    case REMOVE_TODO:
+    }
+    case REMOVE_TODO: {
+      const { i } = payload;
       const copy = [...state.todos];
-      copy.splice(payload, 1);
+      copy.splice(i, 1);
       return {
         ...state,
         todos: copy,
       };
+    }
     case SET_EDIT_MODE:
       const cloned = [...state.todos];
       if (cloned.some((e) => e.status === "editing")) {
