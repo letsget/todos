@@ -6,7 +6,8 @@ import { useDispatch } from "react-redux";
 const TaskList = ({ tasks }) => {
   const dispatch = useDispatch();
 
-  const onComplete = (i, status) => dispatch(handleCompleted(i, status));
+  const onComplete = (i, status, id) =>
+    dispatch(handleCompleted(i, status, id));
   const onRemove = (i) => dispatch(removeTodo(i));
 
   console.log("rendering todos", tasks);
@@ -16,6 +17,7 @@ const TaskList = ({ tasks }) => {
       {tasks.map(({ id, text, time, status }, i) => (
         <Task
           key={id}
+          id={id}
           text={text}
           time={time}
           status={status}

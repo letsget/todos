@@ -8,7 +8,7 @@ import {
   cancelEditMode,
 } from "actions/App";
 
-const Task = ({ text, time, status, i, onComplete, onRemove }) => {
+const Task = ({ text, time, status, i, onComplete, onRemove, id }) => {
   const dispatch = useDispatch();
   const [value, setValue] = useState(text);
   const [currentlyEditing, setIsCurrentlyEditing] = useState(false);
@@ -56,7 +56,7 @@ const Task = ({ text, time, status, i, onComplete, onRemove }) => {
     >
       <div className="view">
         <input
-          onChange={() => onComplete(i, status)}
+          onChange={() => onComplete(i, status, id)}
           className="toggle"
           type="checkbox"
           checked={status === "completed"}
@@ -66,7 +66,7 @@ const Task = ({ text, time, status, i, onComplete, onRemove }) => {
           <span className="created">{time}</span>
         </label>
         <button onClick={toggleEditMode} className="icon icon-edit" />
-        <button onClick={() => onRemove(i)} className="icon icon-destroy" />
+        <button onClick={() => onRemove(id)} className="icon icon-destroy" />
       </div>
       {status === "editing" && (
         <form onSubmit={onEditSubmit}>

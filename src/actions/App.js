@@ -18,9 +18,9 @@ export const getCurrentKey = (key) => ({
   payload: key,
 });
 
-export const handleCompleted = (i, status) => ({
+export const handleCompleted = (i, status, id) => ({
   type: HANDLE_COMPLETED,
-  payload: { i, status },
+  payload: { i, status, id },
 });
 
 export const removeTodo = (i) => ({

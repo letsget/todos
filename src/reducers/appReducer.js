@@ -68,7 +68,8 @@ const appReducer = (state = initialState, { type, payload }) => {
         currentKey: payload,
       };
     case HANDLE_COMPLETED: {
-      const { i, status } = payload;
+      const { i, status, id } = payload;
+      console.log("payload", payload);
       const updated = [...state.todos];
       updated[i].status = status === "active" ? "completed" : "active";
       return {
@@ -77,12 +78,10 @@ const appReducer = (state = initialState, { type, payload }) => {
       };
     }
     case REMOVE_TODO: {
-      const { i } = payload;
-      const copy = [...state.todos];
-      copy.splice(i, 1);
+      console.log("payload", payload);
       return {
         ...state,
-        todos: copy,
+        todos: state.todos.filter((todo) => todo.id !== payload),
       };
     }
     case SET_EDIT_MODE:
