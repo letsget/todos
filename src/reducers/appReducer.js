@@ -68,7 +68,7 @@ const appReducer = (state = initialState, { type, payload }) => {
         currentKey: payload,
       };
     case HANDLE_COMPLETED: {
-      const { i, status, id } = payload;
+      const { i, status, } = payload;
       console.log("payload", payload);
       const updated = [...state.todos];
       updated[i].status = status === "active" ? "completed" : "active";
